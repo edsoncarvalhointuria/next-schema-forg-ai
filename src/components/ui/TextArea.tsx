@@ -1,24 +1,47 @@
 "use client";
 import ReactCodeMirror from "@uiw/react-codemirror";
-import { useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
-import { linter } from "@codemirror/lint";
+import { diagnosticCount, linter } from "@codemirror/lint";
 import "./text-area.scss";
+import { yaml } from "@codemirror/lang-yaml";
+import { javascript } from "@codemirror/lang-javascript";
 
-export default function TextArea() {
-    const [textJson, setTextJson] = useState("");
-
+function TextArea({
+    onChange,
+    type = "json",
+    withError = true,
+    value = "",
+    readOnly = false,
+    isInvalid,
+}: {
+    type?: "zod" | "yaml" | "json";
+    withError?: boolean;
+    value?: string;
+    readOnly?: boolean;
+    onChange?: (v: string) => void;
+    isInvalid?: (v: boolean) => void;
+}) {
+    const extensions = type === "json" ? [json()] : type === "zod" ? [javascript()] : [yaml()];
     return (
         <ReactCodeMirror
-            value={textJson}
+            readOnly={readOnly}
+            editable={!readOnly}
+            value={value}
             height="500px"
             theme={"dark"}
-            extensions={[json(), linter(jsonParseLinter(), { autoPanel: true })]}
-            onChange={(v) => {
-                setTextJson(v);
-                console.log(v);
+            onUpdate={(viewUpdate) => {
+                if (!isInvalid) return;
+
+                const errors = diagnosticCount(viewUpdate.state);
+                if (errors > 0) isInvalid(true);
+                else isInvalid(false);
             }}
+            extensions={withError ? [...extensions, linter(jsonParseLinter(), { autoPanel: true })] : extensions}
+            onChange={onChange}
             className="text-area"
         />
     );
 }
+
+export default memo(TextArea);

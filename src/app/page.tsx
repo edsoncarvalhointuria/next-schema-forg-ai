@@ -2,6 +2,7 @@ import Footer from "@/components/layout/footer/Footer";
 import Header from "@/components/layout/header/Header";
 import "./home.scss";
 import TextArea from "@/components/ui/TextArea";
+import Texts from "@/components/ui/Texts";
 
 export default function Home() {
     return (
@@ -12,16 +13,7 @@ export default function Home() {
                     <span>Schema Forg AI</span>
                 </h1>
 
-                <div className="home__texts">
-                    <div className="home__text">
-                        <div className="home__text">
-                            <h2>JSON</h2>
-                        </div>
-                        <TextArea />
-                    </div>
-
-                    <textarea name="" id=""></textarea>
-                </div>
+                <Texts />
             </main>
             <Footer />
         </>

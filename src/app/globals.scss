@@ -1,0 +1,38 @@
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --border-color: #2d2d2d;
+    --text-primary: #eaeaea;
+    --text-secondary: #888888;
+    --accent-color: #6366f1;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font: inherit;
+    min-height: 0;
+}
+
+img,
+iframe,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+html,
+body {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-geist-sans), sans-serif;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}

@@ -4,6 +4,7 @@ import TextArea from "./TextArea";
 import { Copy } from "lucide-react";
 import UrlModal from "./UrlModal";
 import { fetchToApi } from "@/actions/fetchAi";
+import Loading from "./Loading";
 
 const OPCOES = ["zod", "json", "yaml"] as const;
 
@@ -13,6 +14,7 @@ export default function Texts() {
     const [valueAI, setValueAI] = useState("");
     const [disabled, setDisable] = useState(true);
     const [addURL, setAddURL] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const onChangeValue = useCallback((value: string) => {
         setValueUser(value);
     }, []);
@@ -21,11 +23,13 @@ export default function Texts() {
     }, []);
     const getValues = useCallback(async () => {
         if (disabled || !valueUser) return;
+        setIsLoading(true);
         setDisable(true);
         const response = await fetchToApi(currentType, valueUser);
 
         setValueAI(response.response);
         setDisable(false);
+        setIsLoading(false);
     }, [valueUser, disabled]);
 
     return (
@@ -78,6 +82,8 @@ export default function Texts() {
                     <TextArea withError={false} readOnly type={currentType} value={valueAI} />
                 </div>
             </div>
+
+            {isLoading && <Loading />}
 
             {addURL && <UrlModal onClose={() => setAddURL(false)} onFind={(v: string) => setValueUser(v)} />}
         </>

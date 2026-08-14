@@ -23,9 +23,8 @@ export default function Texts() {
         if (disabled || !valueUser) return;
         setDisable(true);
         const response = await fetchToApi(currentType, valueUser);
-        console.log(response);
 
-        setValueAI(response);
+        setValueAI(response.response);
         setDisable(false);
     }, [valueUser, disabled]);
 
@@ -76,11 +75,11 @@ export default function Texts() {
                             </button>
                         </div>
                     </div>
-                    <TextArea withError={false} type={currentType} readOnly value={valueAI} />
+                    <TextArea withError={false} readOnly type={currentType} value={valueAI} />
                 </div>
             </div>
 
-            {addURL && <UrlModal onClose={() => setAddURL(false)} onFind={(v) => setValueUser(v)} />}
+            {addURL && <UrlModal onClose={() => setAddURL(false)} onFind={(v: string) => setValueUser(v)} />}
         </>
     );
 }
